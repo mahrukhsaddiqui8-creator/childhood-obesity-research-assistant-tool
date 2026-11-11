@@ -148,10 +148,30 @@ st.info(
     "**Study timeline:** 12 months total  |  "
     "**Intervention:** 6 months  |  **Follow-up:** 6 months"
 )
+st.success(
+    "**Guided demo is ready:** Each tab already contains a topic-specific "
+    "example question. Review it, edit it if needed, and click Generate AI Response. "
+    "You do not need to type questions from scratch."
+)
+
+# Preloaded demonstration questions: the presenter does not need to type
+# a new question in every tab during the professor demonstration.
+DEMO_QUESTIONS = {
+    "01": "Why is a parallel-group cluster randomized controlled trial appropriate for evaluating this school-based intervention?",
+    "02": "Why are children aged 6-10 years in USA public elementary schools the target population, and what eligibility criteria should be considered?",
+    "03": "How should the integrated physical activity and sedentary behaviour intervention be structured, and what should the usual-practice control group receive?",
+    "04": "What are the primary and secondary outcomes in this study, and how should each variable be classified and defined?",
+    "05": "How should data be collected at baseline, 6 months, and 12 months while keeping measurements feasible and consistent across schools?",
+    "06": "Why are intention-to-treat analysis and mixed-effects models appropriate for this cluster randomized trial with repeated measurements?",
+    "07": "What are the main methodological, ethical, and practical challenges that should be discussed with the research supervisor before conducting this study?",
+}
 
 # Keep user entries and generated explanations when moving between tabs.
+# Questions are prefilled for a guided demo but remain editable.
 for number, name in sections:
-    st.session_state.setdefault(f"question_{number}", "")
+    question_key = f"question_{number}"
+    if question_key not in st.session_state or not st.session_state[question_key].strip():
+        st.session_state[question_key] = DEMO_QUESTIONS[number]
     st.session_state.setdefault(f"answer_{number}", "")
 
 st.session_state.setdefault("final_proposal", "")
@@ -311,4 +331,4 @@ st.divider()
 st.caption(
     "AI-Assisted Quantitative Research Tool | "
     "Childhood Obesity Prevention | Cluster Randomized Controlled Trial"
-        )
+)
